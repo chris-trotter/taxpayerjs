@@ -106,8 +106,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Taxpayer = function () {
     function Taxpayer(attributes) {
+        var taxYear = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _config2.default.DEFAULT_TAX_YEAR;
+
         _classCallCheck(this, Taxpayer);
 
+        // Throw error if no attributes provided
+        if (!attributes) {
+            throw Error(_config2.default.ERRORS.MISSING_ATTRIBUTES);
+        }
+
+        this.taxYear = taxYear;
+
+        // Assign tax payer's attributes to the base of the instantiated object
+        // This creates a simple API for users
         _extends(this, attributes);
     }
 
@@ -115,6 +126,38 @@ var Taxpayer = function () {
         key: 'getSalary',
         value: function getSalary() {
             return this.salary;
+        }
+    }, {
+        key: 'taxYear',
+        get: function get() {
+            return this._taxYear;
+        },
+        set: function set(taxYear) {
+            // Lookup provided tax year and assign the appropriate configuration
+            this._taxYear = taxYear;
+
+            switch (taxYear) {
+                case '2015/2016':
+                    {
+                        this.rules = _config2.default[taxYear];
+                        break;
+                    }
+                case '2014/2015':
+                    {
+                        this.rules = _config2.default[taxYear];
+                        break;
+                    }
+                case '2013/2014':
+                    {
+                        this.rules = _config2.default[taxYear];
+                        break;
+                    }
+                default:
+                    {
+                        throw Error(_config2.default.ERRORS.INVALID_TAX_YEAR);
+                        break;
+                    }
+            }
         }
     }]);
 
@@ -134,6 +177,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var config = {
+    "DEFAULT_TAX_YEAR": "2015/2016",
+    "ERRORS": {
+        "MISSING_ATTRIBUTES": "Tax payer attributes must be provided.",
+        "INVALID_TAX_YEAR": "A valid tax year was not provided."
+    },
     "2015/2016": {
         "incomeTax": {
             "personalAllowance": 12000,
