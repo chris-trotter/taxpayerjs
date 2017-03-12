@@ -1,5 +1,6 @@
 import CONFIG from './config';
 import DEFAULT_ATTRIBUTES from './default-attributes';
+import has from 'lodash/has';
 
 class Taxpayer {
     constructor(attributes, taxYear = CONFIG.DEFAULT_TAX_YEAR) {
@@ -23,29 +24,28 @@ class Taxpayer {
         // Lookup provided tax year and assign the appropriate configuration
         this._taxYear = taxYear;
 
-        switch (taxYear) {
-            case '2015/2016': {
-                this.rules = CONFIG[taxYear];
-                break;
-            }
-            case '2014/2015': {
-                this.rules = CONFIG[taxYear];
-                break;
-            }
-            case '2013/2014': {
-                this.rules = CONFIG[taxYear];
-                break;
-            }
-            default: {
-                throw Error (CONFIG.ERRORS.INVALID_TAX_YEAR);
-                break;
-            }
+        if (has(CONFIG, taxYear)) {
+            this.rules = CONFIG[taxYear];
+        } else {
+            throw Error (CONFIG.ERRORS.INVALID_TAX_YEAR);
         }
-        
     }
-    getSalary(){
-        return this.salary;
+    get personalAllowance(){
+        let modifier,
+            {personalAllowance, personalAllowanceIncomeLimit} = this.rules.incomeTax,
+            {grossSalary} = this;
+
+        modifier = Math.max(
+            Math.min(
+                ((grossSalary - personalAllowanceIncomeLimit) / 2), 
+                personalAllowance
+            ), 
+            0
+        );
+
+        return personalAllowance - modifier;
     }
+    
 }
 
 export default Taxpayer;

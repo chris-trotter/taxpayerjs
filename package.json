@@ -30,5 +30,8 @@
     "phantomjs-prebuilt": "^2.1.14",
     "sinon": "^1.17.7",
     "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
   }
 }
