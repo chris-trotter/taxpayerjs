@@ -5,7 +5,7 @@ import Taxpayer from '../src/Taxpayer';
 import CONFIG from '../src/config';
 
 describe('Taxpayer class', () => {
-    describe('instantiation', () => {
+    describe('Instantiation', () => {
         it('throws an error if not provided with attributes', () => {
             // http://stackoverflow.com/questions/21587122/mocha-chai-expect-to-throw-not-catching-thrown-errors
             expect(function() {
@@ -70,6 +70,7 @@ describe('Taxpayer class', () => {
         });
     });
     describe('Personal allowance', () => {
+
         it('should be reduced if gross salary is over PA Income Limit', () => {            
             let john = new Taxpayer({age: 50});
             let {personalAllowanceIncomeLimit} = john.rules.incomeTax;
@@ -96,6 +97,28 @@ describe('Taxpayer class', () => {
 
             expect(john.personalAllowance).to.equal(0);
         });
+    });
 
-    })
+    describe('Pension sacrifice', () => {
+        it('should calculate no pension sacrifice when no percentage set', () => {
+            let johnSettings = {
+                grossSalary: 50000.00
+            };
+
+            let john = new Taxpayer(johnSettings);
+
+            expect(john.pensionSacrifice).to.equal(0);
+        });
+
+        it('should calculate correct pension sacrifice when set', () => {
+            let johnSettings = {
+                grossSalary: 50000.00,
+                pensionSacrificePercent: 0.05
+            };
+
+            let john = new Taxpayer(johnSettings);
+
+            expect(john.pensionSacrifice).to.equal(2500);
+        });
+    });
 });

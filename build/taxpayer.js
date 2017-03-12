@@ -434,6 +434,7 @@ var Taxpayer = function () {
     }, {
         key: 'personalAllowance',
         get: function get() {
+            // Return the revised personal allowance after considering user's tax levels
             var modifier = void 0,
                 _rules$incomeTax = this.rules.incomeTax,
                 personalAllowance = _rules$incomeTax.personalAllowance,
@@ -444,6 +445,15 @@ var Taxpayer = function () {
             modifier = Math.max(Math.min((grossSalary - personalAllowanceIncomeLimit) / 2, personalAllowance), 0);
 
             return personalAllowance - modifier;
+        }
+    }, {
+        key: 'pensionSacrifice',
+        get: function get() {
+            var grossSalary = this.grossSalary,
+                pensionSacrificePercent = this.pensionSacrificePercent;
+
+
+            return grossSalary * pensionSacrificePercent;
         }
     }]);
 
@@ -508,8 +518,7 @@ var defaultAttributes = {
     grossSalary: 0.0,
     studentLoanRepayments: false,
     studentLoanRepaymentsPlan: 1,
-    pensionContributions: false,
-    pensionContributionsPercent: 0.05,
+    pensionSacrificePercent: 0.00,
     taxCode: '1200L'
 };
 

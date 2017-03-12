@@ -3,8 +3,7 @@ const defaultAttributes = {
     grossSalary: 0.0,
     studentLoanRepayments: false,
     studentLoanRepaymentsPlan: 1,
-    pensionContributions: false,
-    pensionContributionsPercent: 0.05,
+    pensionSacrificePercent: 0.00,
     taxCode: '1200L'
 };
 

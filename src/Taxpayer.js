@@ -17,9 +17,11 @@ class Taxpayer {
         Object.assign(this, DEFAULT_ATTRIBUTES, attributes);
 
     }
+
     get taxYear(){
         return this._taxYear;
     }
+
     set taxYear(taxYear){
         // Lookup provided tax year and assign the appropriate configuration
         this._taxYear = taxYear;
@@ -30,7 +32,9 @@ class Taxpayer {
             throw Error (CONFIG.ERRORS.INVALID_TAX_YEAR);
         }
     }
+
     get personalAllowance(){
+        // Return the revised personal allowance after considering user's tax levels
         let modifier,
             {personalAllowance, personalAllowanceIncomeLimit} = this.rules.incomeTax,
             {grossSalary} = this;
@@ -44,6 +48,13 @@ class Taxpayer {
         );
 
         return personalAllowance - modifier;
+    }
+
+    get pensionSacrifice() {
+        let {grossSalary, 
+            pensionSacrificePercent} = this;
+        
+        return grossSalary * pensionSacrificePercent;
     }
     
 }
