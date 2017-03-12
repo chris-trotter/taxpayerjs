@@ -36,18 +36,18 @@ class Taxpayer {
     get personalAllowance(){
         // Return the revised personal allowance after considering user's tax levels
         let modifier,
-            {personalAllowance, personalAllowanceIncomeLimit} = this.rules.incomeTax,
+            {base, incomeLimit} = this.rules.incomeTax.personalAllowance,
             {grossSalary} = this;
 
         modifier = Math.max(
             Math.min(
-                ((grossSalary - personalAllowanceIncomeLimit) / 2), 
-                personalAllowance
+                ((grossSalary - incomeLimit) / 2), 
+                base
             ), 
             0
         );
 
-        return personalAllowance - modifier;
+        return base - modifier;
     }
 
     get pensionSacrifice() {

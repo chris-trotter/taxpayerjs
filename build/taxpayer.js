@@ -436,15 +436,15 @@ var Taxpayer = function () {
         get: function get() {
             // Return the revised personal allowance after considering user's tax levels
             var modifier = void 0,
-                _rules$incomeTax = this.rules.incomeTax,
-                personalAllowance = _rules$incomeTax.personalAllowance,
-                personalAllowanceIncomeLimit = _rules$incomeTax.personalAllowanceIncomeLimit,
+                _rules$incomeTax$pers = this.rules.incomeTax.personalAllowance,
+                base = _rules$incomeTax$pers.base,
+                incomeLimit = _rules$incomeTax$pers.incomeLimit,
                 grossSalary = this.grossSalary;
 
 
-            modifier = Math.max(Math.min((grossSalary - personalAllowanceIncomeLimit) / 2, personalAllowance), 0);
+            modifier = Math.max(Math.min((grossSalary - incomeLimit) / 2, base), 0);
 
-            return personalAllowance - modifier;
+            return base - modifier;
         }
     }, {
         key: 'pensionSacrifice',
@@ -480,22 +480,28 @@ var config = {
     },
     "2015/2016": {
         "incomeTax": {
-            "personalAllowance": 10600,
-            "personalAllowanceIncomeLimit": 100000,
+            "personalAllowance": {
+                "base": 10600,
+                "incomeLimit": 100000
+            },
             "taxRate": 0.3
         }
     },
     "2014/2015": {
         "incomeTax": {
-            "personalAllowance": 12000,
-            "personalAllowanceIncomeLimit": 100000,
+            "personalAllowance": {
+                "base": 10600,
+                "incomeLimit": 100000
+            },
             "taxRate": 0.3
         }
     },
     "2013/2014": {
         "incomeTax": {
-            "personalAllowance": 12000,
-            "personalAllowanceIncomeLimit": 100000,
+            "personalAllowance": {
+                "base": 10600,
+                "incomeLimit": 100000
+            },
             "taxRate": 0.3
         }
     }

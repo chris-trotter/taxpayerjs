@@ -6,22 +6,28 @@ const config = {
     },
     "2015/2016": {
         "incomeTax": {
-            "personalAllowance": 10600,
-            "personalAllowanceIncomeLimit": 100000,
+            "personalAllowance": {
+                "base": 10600,
+                "incomeLimit": 100000
+            },
             "taxRate": 0.3
         }
     },
     "2014/2015": {
         "incomeTax": {
-            "personalAllowance": 12000,
-            "personalAllowanceIncomeLimit": 100000,
+            "personalAllowance": {
+                "base": 10600,
+                "incomeLimit": 100000
+            },
             "taxRate": 0.3
         }
     },
     "2013/2014": {
         "incomeTax": {
-            "personalAllowance": 12000,
-            "personalAllowanceIncomeLimit": 100000,
+            "personalAllowance": {
+                "base": 10600,
+                "incomeLimit": 100000
+            },
             "taxRate": 0.3
         }
     },

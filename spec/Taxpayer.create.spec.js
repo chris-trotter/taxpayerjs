@@ -73,27 +73,28 @@ describe('Taxpayer class', () => {
 
         it('should be reduced if gross salary is over PA Income Limit', () => {            
             let john = new Taxpayer({age: 50});
-            let {personalAllowanceIncomeLimit} = john.rules.incomeTax;
-            john.grossSalary = personalAllowanceIncomeLimit + 5000;
-
+            let {incomeLimit} = john.rules.incomeTax.personalAllowance;
+            john.grossSalary = incomeLimit + 5000;
+            
+            console.log('incomeLimit', incomeLimit);
             expect(john.personalAllowance)
-                .to.be.lessThan(john.rules.incomeTax.personalAllowance)
+                .to.be.lessThan(john.rules.incomeTax.personalAllowance.base)
                 .and.to.be.at.least(0);
         });
 
         it('should remain unchanged if gross salary is below the PA Income Limit', () => {
             let john = new Taxpayer({age: 50});
-            let {personalAllowanceIncomeLimit} = john.rules.incomeTax;
-            john.grossSalary = personalAllowanceIncomeLimit - 5000;
+            let {incomeLimit} = john.rules.incomeTax.personalAllowance;
+            john.grossSalary = incomeLimit - 5000;
 
             expect(john.personalAllowance)
-                .to.equal(john.rules.incomeTax.personalAllowance);
+                .to.equal(john.rules.incomeTax.personalAllowance.base);
         });
 
         it('should be nil if gross salary is double PA Income Limit', () => {            
             let john = new Taxpayer({age: 50});
-            let {personalAllowanceIncomeLimit} = john.rules.incomeTax;
-            john.grossSalary = personalAllowanceIncomeLimit * 2;
+            let {incomeLimit} = john.rules.incomeTax.personalAllowance;
+            john.grossSalary = incomeLimit * 2;
 
             expect(john.personalAllowance).to.equal(0);
         });
