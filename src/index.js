@@ -1,5 +1,3 @@
-import sum from './sum';
+import Taxpayer from './Taxpayer';
 
-const total = sum(10, 5);
-
-console.log('total', total);
+const john = new Taxpayer();

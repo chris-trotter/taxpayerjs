@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,14 +73,13 @@
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var sum = function sum(a, b) {
-  return a + b;
-};
+var _Taxpayer = __webpack_require__(1);
 
-exports.default = sum;
+var _Taxpayer2 = _interopRequireDefault(_Taxpayer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var john = new _Taxpayer2.default();
 
 /***/ }),
 /* 1 */
@@ -89,15 +88,68 @@ exports.default = sum;
 "use strict";
 
 
-var _sum = __webpack_require__(0);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-var _sum2 = _interopRequireDefault(_sum);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _config = __webpack_require__(2);
+
+var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var total = (0, _sum2.default)(10, 5);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-console.log('total', total);
+var Taxpayer = function () {
+    function Taxpayer(attributes) {
+        _classCallCheck(this, Taxpayer);
+
+        _extends(this, attributes);
+    }
+
+    _createClass(Taxpayer, [{
+        key: 'getSalary',
+        value: function getSalary() {
+            return this.salary;
+        }
+    }]);
+
+    return Taxpayer;
+}();
+
+exports.default = Taxpayer;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var config = {
+    "2015/2016": {
+        "incomeTax": {
+            "personalAllowance": 12000,
+            "taxRate": 0.3
+        }
+    }
+};
+
+exports.default = config;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(0);
+
 
 /***/ })
 /******/ ]);
