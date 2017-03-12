@@ -1,4 +1,5 @@
 import CONFIG from './config';
+import DEFAULT_ATTRIBUTES from './default-attributes';
 
 class Taxpayer {
     constructor(attributes, taxYear = CONFIG.DEFAULT_TAX_YEAR) {
@@ -12,8 +13,7 @@ class Taxpayer {
 
         // Assign tax payer's attributes to the base of the instantiated object
         // This creates a simple API for users
-        Object.assign(this, attributes);
-
+        Object.assign(this, DEFAULT_ATTRIBUTES, attributes);
 
     }
     get taxYear(){

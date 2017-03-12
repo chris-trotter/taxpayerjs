@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -100,6 +100,10 @@ var _config = __webpack_require__(2);
 
 var _config2 = _interopRequireDefault(_config);
 
+var _defaultAttributes = __webpack_require__(3);
+
+var _defaultAttributes2 = _interopRequireDefault(_defaultAttributes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -119,7 +123,7 @@ var Taxpayer = function () {
 
         // Assign tax payer's attributes to the base of the instantiated object
         // This creates a simple API for users
-        _extends(this, attributes);
+        _extends(this, _defaultAttributes2.default, attributes);
     }
 
     _createClass(Taxpayer, [{
@@ -194,6 +198,27 @@ exports.default = config;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var defaultAttributes = {
+    age: 40,
+    studentLoanRepayments: false,
+    studentLoanRepaymentsPlan: 1,
+    pensionContributions: false,
+    pensionContributionsPercent: 0.05,
+    taxCode: '1200L'
+};
+
+exports.default = defaultAttributes;
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(0);
