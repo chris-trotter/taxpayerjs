@@ -432,9 +432,9 @@ var Taxpayer = function () {
             }
         }
     }, {
-        key: 'personalAllowance',
+        key: 'maxPersonalAllowance',
         get: function get() {
-            // Return the revised personal allowance after considering user's tax levels
+            // Return the revised maximum personal allowance after considering user's tax levels
             var modifier = void 0,
                 _rules$incomeTax$pers = this.rules.incomeTax.personalAllowance,
                 base = _rules$incomeTax$pers.base,
@@ -445,6 +445,14 @@ var Taxpayer = function () {
             modifier = Math.max(Math.min((grossSalary - incomeLimit) / 2, base), 0);
 
             return base - modifier;
+        }
+    }, {
+        key: 'personalAllowance',
+        get: function get() {
+            var grossSalary = this.grossSalary,
+                maxPersonalAllowance = this.maxPersonalAllowance;
+
+            return Math.min(grossSalary, maxPersonalAllowance);
         }
     }, {
         key: 'pensionSacrifice',
@@ -474,6 +482,15 @@ var Taxpayer = function () {
             }
 
             return repayment;
+        }
+    }, {
+        key: 'taxableIncome',
+        get: function get() {
+            var grossSalary = this.grossSalary,
+                personalAllowance = this.personalAllowance;
+
+
+            return grossSalary - personalAllowance;
         }
     }]);
 
@@ -514,7 +531,15 @@ var config = {
                 "base": 10600,
                 "incomeLimit": 100000
             },
-            "taxRate": 0.3
+            "bands": [{
+                "upperLimit": 31785,
+                "rate": 0.2
+            }, {
+                "upperLimit": 150000,
+                "rate": 0.40
+            }, {
+                "rate": 0.45
+            }]
         }
     },
     "2014/2015": {
@@ -531,9 +556,17 @@ var config = {
             },
             "personalAllowance": {
                 "base": 10600,
-                "incomeLimit": 100000
+                "incomeLimit": 150000
             },
-            "taxRate": 0.3
+            "bands": [{
+                "upperLimit": 31865,
+                "rate": 0.2
+            }, {
+                "upperLimit": 150000,
+                "rate": 0.40
+            }, {
+                "rate": 0.45
+            }]
         }
     },
     "2013/2014": {
@@ -552,7 +585,15 @@ var config = {
                 "base": 10600,
                 "incomeLimit": 100000
             },
-            "taxRate": 0.3
+            "bands": [{
+                "upperLimit": 32010,
+                "rate": 0.2
+            }, {
+                "upperLimit": 150000,
+                "rate": 0.40
+            }, {
+                "rate": 0.45
+            }]
         }
     }
 };

@@ -20,7 +20,19 @@ const config = {
                 "base": 10600,
                 "incomeLimit": 100000
             },
-            "taxRate": 0.3
+            "bands": [
+                {
+                    "upperLimit": 31785,
+                    "rate": 0.2
+                },
+                {
+                    "upperLimit": 150000,
+                    "rate": 0.40
+                },
+                {
+                    "rate": 0.45
+                }
+            ]
         }
     },
     "2014/2015": {
@@ -37,9 +49,21 @@ const config = {
             },
             "personalAllowance": {
                 "base": 10600,
-                "incomeLimit": 100000
+                "incomeLimit": 150000
             },
-            "taxRate": 0.3
+            "bands": [
+                {
+                    "upperLimit": 31865,
+                    "rate": 0.2
+                },
+                {
+                    "upperLimit": 150000,
+                    "rate": 0.40
+                },
+                {
+                    "rate": 0.45
+                }
+            ]
         }
     },
     "2013/2014": {
@@ -58,7 +82,19 @@ const config = {
                 "base": 10600,
                 "incomeLimit": 100000
             },
-            "taxRate": 0.3
+            "bands": [
+                {
+                    "upperLimit": 32010,
+                    "rate": 0.2
+                },
+                {
+                    "upperLimit": 150000,
+                    "rate": 0.40
+                },
+                {
+                    "rate": 0.45
+                }
+            ]
         }
     },
 }

@@ -69,14 +69,14 @@ describe('Taxpayer class', () => {
             expect(john.age).to.equal(50);
         });
     });
-    describe('Personal allowance', () => {
+    describe('Maximum Personal allowance', () => {
 
         it('should be reduced if gross salary is over PA Income Limit', () => {            
             let john = new Taxpayer({age: 50});
             let {incomeLimit} = john.rules.incomeTax.personalAllowance;
             john.grossSalary = incomeLimit + 5000;
             
-            expect(john.personalAllowance)
+            expect(john.maxPersonalAllowance)
                 .to.be.lessThan(john.rules.incomeTax.personalAllowance.base)
                 .and.to.be.at.least(0);
         });
@@ -86,7 +86,7 @@ describe('Taxpayer class', () => {
             let {incomeLimit} = john.rules.incomeTax.personalAllowance;
             john.grossSalary = incomeLimit - 5000;
 
-            expect(john.personalAllowance)
+            expect(john.maxPersonalAllowance)
                 .to.equal(john.rules.incomeTax.personalAllowance.base);
         });
 
@@ -95,8 +95,26 @@ describe('Taxpayer class', () => {
             let {incomeLimit} = john.rules.incomeTax.personalAllowance;
             john.grossSalary = incomeLimit * 2;
 
-            expect(john.personalAllowance).to.equal(0);
+            expect(john.maxPersonalAllowance).to.equal(0);
         });
+    });
+
+    describe('Personal allowance', () => {
+        it('should match gross salary if below maximum personal allowance', () => {
+            let john = new Taxpayer({});
+            let grossSalary = john.rules.incomeTax.personalAllowance.base - 1000;
+            john.grossSalary = grossSalary;
+
+            expect(john.personalAllowance).to.equal(grossSalary);
+        });
+
+        it('should equal maximum personal allowance if gross salary over maximum personal allowance', () => {
+            let john = new Taxpayer({});
+            let grossSalary = john.rules.incomeTax.personalAllowance.base + 1000;
+            john.grossSalary = grossSalary;
+            
+            expect(john.personalAllowance).to.equal(john.maxPersonalAllowance);
+        })
     });
 
     describe('Pension sacrifice', () => {
@@ -184,6 +202,20 @@ describe('Taxpayer class', () => {
             expect(john.studentLoanRepayment).to.be.greaterThan(0);
             expect(sarah.studentLoanRepayment).to.be.greaterThan(0);
         });
+    });
 
+    describe('Taxable income', () => {
+        it('should be nil if gross Salary is below the personal allowance', () => {
+            let john = new Taxpayer({});
+            let grossSalary = john.rules.incomeTax.personalAllowance.base - 1000;
+            john.grossSalary = grossSalary;
+
+            expect(john.taxableIncome).to.equal(0);
+        });
+
+        it('should equal gross salary is above personal allowance income limit', () => {
+            let john = new Taxpayer({grossSalary: 140000});
+            expect(john.taxableIncome).to.equal(140000);
+        });
     })
 });
