@@ -6,6 +6,16 @@ const config = {
     },
     "2015/2016": {
         "incomeTax": {
+            "studentLoanRepayments": {
+                "plan1": {
+                    "threshold": "17495",
+                    "rate": 0.09
+                },
+                "plan2": {
+                    "threshold": "21000",
+                    "rate": 0.09
+                }
+            },
             "personalAllowance": {
                 "base": 10600,
                 "incomeLimit": 100000
@@ -15,6 +25,16 @@ const config = {
     },
     "2014/2015": {
         "incomeTax": {
+            "studentLoanRepayments": {
+                "plan1": {
+                    "threshold": "17495",
+                    "rate": 0.09
+                },
+                "plan2": {
+                    "threshold": "21000",
+                    "rate": 0.09
+                }
+            },
             "personalAllowance": {
                 "base": 10600,
                 "incomeLimit": 100000
@@ -24,6 +44,16 @@ const config = {
     },
     "2013/2014": {
         "incomeTax": {
+            "studentLoanRepayments": {
+                "plan1": {
+                    "threshold": "17495",
+                    "rate": 0.09
+                },
+                "plan2": {
+                    "threshold": "21000",
+                    "rate": 0.09
+                }
+            },
             "personalAllowance": {
                 "base": 10600,
                 "incomeLimit": 100000

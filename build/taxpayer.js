@@ -455,6 +455,26 @@ var Taxpayer = function () {
 
             return grossSalary * pensionSacrificePercent;
         }
+    }, {
+        key: 'studentLoanRepayment',
+        get: function get() {
+            var grossSalary = this.grossSalary,
+                studentLoanRepayments = this.studentLoanRepayments,
+                studentLoanRepaymentsPlan = this.studentLoanRepaymentsPlan;
+            var _rules$incomeTax$stud = this.rules.incomeTax.studentLoanRepayments['plan' + studentLoanRepaymentsPlan],
+                threshold = _rules$incomeTax$stud.threshold,
+                rate = _rules$incomeTax$stud.rate,
+                rateableSalary = void 0,
+                repayment = 0;
+
+
+            if (studentLoanRepayments) {
+                rateableSalary = Math.max(grossSalary - threshold, 0);
+                repayment = rateableSalary * rate;
+            }
+
+            return repayment;
+        }
     }]);
 
     return Taxpayer;
@@ -480,6 +500,16 @@ var config = {
     },
     "2015/2016": {
         "incomeTax": {
+            "studentLoanRepayments": {
+                "plan1": {
+                    "threshold": "17495",
+                    "rate": 0.09
+                },
+                "plan2": {
+                    "threshold": "21000",
+                    "rate": 0.09
+                }
+            },
             "personalAllowance": {
                 "base": 10600,
                 "incomeLimit": 100000
@@ -489,6 +519,16 @@ var config = {
     },
     "2014/2015": {
         "incomeTax": {
+            "studentLoanRepayments": {
+                "plan1": {
+                    "threshold": "17495",
+                    "rate": 0.09
+                },
+                "plan2": {
+                    "threshold": "21000",
+                    "rate": 0.09
+                }
+            },
             "personalAllowance": {
                 "base": 10600,
                 "incomeLimit": 100000
@@ -498,6 +538,16 @@ var config = {
     },
     "2013/2014": {
         "incomeTax": {
+            "studentLoanRepayments": {
+                "plan1": {
+                    "threshold": "17495",
+                    "rate": 0.09
+                },
+                "plan2": {
+                    "threshold": "21000",
+                    "rate": 0.09
+                }
+            },
             "personalAllowance": {
                 "base": 10600,
                 "incomeLimit": 100000

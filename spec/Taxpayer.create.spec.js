@@ -76,7 +76,6 @@ describe('Taxpayer class', () => {
             let {incomeLimit} = john.rules.incomeTax.personalAllowance;
             john.grossSalary = incomeLimit + 5000;
             
-            console.log('incomeLimit', incomeLimit);
             expect(john.personalAllowance)
                 .to.be.lessThan(john.rules.incomeTax.personalAllowance.base)
                 .and.to.be.at.least(0);
@@ -122,4 +121,69 @@ describe('Taxpayer class', () => {
             expect(john.pensionSacrifice).to.equal(2500);
         });
     });
+
+    describe('Student loan repayments', () => {
+        it('should have nil repayments if not opted in to student loan repayments', () => {
+            let johnSettings = {
+                grossSalary: 50000,
+                studentLoanRepayments: false,
+                studentLoanRepaymentsPlan: 1
+            };
+
+            let sarahSettings = {
+                grossSalary: 50000,
+                studentLoanRepayments: false,
+                studentLoanRepaymentsPlan: 2
+            };
+
+            let john = new Taxpayer(johnSettings);
+            let sarah = new Taxpayer(sarahSettings);
+
+            expect(john.studentLoanRepayment).to.equal(0);
+            expect(sarah.studentLoanRepayment).to.equal(0);
+        });
+
+        it('should have nil repayments if earning below threshold', () => {
+            let johnSettings = { 
+                studentLoanRepayments: true, 
+                studentLoanRepaymentsPlan: 1,
+            };
+
+            let sarahSettings = { 
+                studentLoanRepayments: true, 
+                studentLoanRepaymentsPlan: 2,
+            };
+
+            let john = new Taxpayer(johnSettings);
+            let sarah = new Taxpayer(sarahSettings);
+
+            john.grossSalary = john.rules.incomeTax.studentLoanRepayments.plan1.threshold - 1000;
+            sarah.grossSalary = sarah.rules.incomeTax.studentLoanRepayments.plan2.threshold - 1000;
+            
+            expect(john.studentLoanRepayment).to.equal(0);
+            expect(sarah.studentLoanRepayment).to.equal(0);
+        });
+
+         it('should have student loan repayments if earning double the threshold', () => {
+            let johnSettings = { 
+                studentLoanRepayments: true, 
+                studentLoanRepaymentsPlan: 1,
+            };
+
+            let sarahSettings = { 
+                studentLoanRepayments: true, 
+                studentLoanRepaymentsPlan: 2,
+            };
+
+            let john = new Taxpayer(johnSettings);
+            let sarah = new Taxpayer(sarahSettings);
+
+            john.grossSalary = john.rules.incomeTax.studentLoanRepayments.plan1.threshold * 2;
+            sarah.grossSalary = sarah.rules.incomeTax.studentLoanRepayments.plan2.threshold * 2;
+
+            expect(john.studentLoanRepayment).to.be.greaterThan(0);
+            expect(sarah.studentLoanRepayment).to.be.greaterThan(0);
+        });
+
+    })
 });

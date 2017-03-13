@@ -57,6 +57,18 @@ class Taxpayer {
         return grossSalary * pensionSacrificePercent;
     }
     
+    get studentLoanRepayment() {
+        let {grossSalary, studentLoanRepayments, studentLoanRepaymentsPlan} = this;
+        let {threshold, rate} = this.rules.incomeTax.studentLoanRepayments['plan' + studentLoanRepaymentsPlan],
+            rateableSalary, repayment = 0;
+        
+        if (studentLoanRepayments) {
+            rateableSalary = Math.max(grossSalary - threshold, 0);
+            repayment = rateableSalary * rate;
+        }
+
+        return repayment;
+    }
 }
 
 export default Taxpayer;
