@@ -112,7 +112,7 @@ describe('Taxpayer class', () => {
             let john = new Taxpayer({});
             let grossSalary = john.rules.incomeTax.personalAllowance.base + 1000;
             john.grossSalary = grossSalary;
-            
+
             expect(john.personalAllowance).to.equal(john.maxPersonalAllowance);
         })
     });
@@ -216,6 +216,30 @@ describe('Taxpayer class', () => {
         it('should equal gross salary is above personal allowance income limit', () => {
             let john = new Taxpayer({grossSalary: 140000});
             expect(john.taxableIncome).to.equal(140000);
+        });
+    });
+
+    describe('Basic rate band', () => {
+        it('should be nil if grossSalary is maximum below personal allowance', () => {
+            let john = new Taxpayer({});
+            let grossSalary = john.rules.incomeTax.personalAllowance.base - 1000;
+            john.grossSalary = grossSalary;
+
+            expect(john.basicRateTax).to.equal(0);
+        });
+
+        it('should be equal to range * rate if salary is higher than the band and PA', () => {
+            let john, expectedTax;
+
+            john = new Taxpayer({});
+
+            let {upperLimit, rate} = john.rules.incomeTax.bands[0],
+                {base} = john.rules.incomeTax.personalAllowance;
+
+            john.grossSalary = base + upperLimit;
+            expectedTax = upperLimit * rate;
+
+            expect(john.basicRateTax).to.equal(expectedTax);
         });
     })
 });

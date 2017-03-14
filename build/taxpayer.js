@@ -492,6 +492,21 @@ var Taxpayer = function () {
 
             return grossSalary - personalAllowance;
         }
+    }, {
+        key: 'basicRateTax',
+        get: function get() {
+            var range = void 0,
+                tax = void 0,
+                taxableIncome = this.taxableIncome,
+                _rules$incomeTax$band = this.rules.incomeTax.bands[0],
+                upperLimit = _rules$incomeTax$band.upperLimit,
+                rate = _rules$incomeTax$band.rate;
+
+            range = Math.min(taxableIncome, upperLimit);
+            tax = range * rate;
+
+            return tax;
+        }
     }]);
 
     return Taxpayer;

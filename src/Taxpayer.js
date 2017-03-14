@@ -80,6 +80,17 @@ class Taxpayer {
 
         return grossSalary - personalAllowance;
     }
+
+    get basicRateTax() {
+        let range, tax,
+            {taxableIncome} = this,
+            {upperLimit, rate} = this.rules.incomeTax.bands[0];
+        
+        range = Math.min(taxableIncome, upperLimit);
+        tax = range * rate;
+
+        return tax;
+    }
 }
 
 export default Taxpayer;
