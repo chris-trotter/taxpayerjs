@@ -22,14 +22,17 @@ const config = {
             },
             "bands": [
                 {
+                    "lowerLimit": 0,
                     "upperLimit": 31785,
                     "rate": 0.2
                 },
-                {
+                {   
+                    "lowerLimit": 31785,
                     "upperLimit": 150000,
                     "rate": 0.40
                 },
                 {
+                    "lowerLimit": 150000,
                     "rate": 0.45
                 }
             ]
@@ -53,14 +56,17 @@ const config = {
             },
             "bands": [
                 {
+                    "lowerLimit": 0,
                     "upperLimit": 31865,
                     "rate": 0.2
                 },
                 {
+                    "lowerLimit": 31865,
                     "upperLimit": 150000,
                     "rate": 0.40
                 },
                 {
+                    "lowerLimit": 150000,
                     "rate": 0.45
                 }
             ]
@@ -84,14 +90,17 @@ const config = {
             },
             "bands": [
                 {
+                    "lowerLimit": 0,
                     "upperLimit": 32010,
                     "rate": 0.2
                 },
                 {
+                    "lowerLimit": 0,
                     "upperLimit": 150000,
                     "rate": 0.40
                 },
                 {
+                    "lowerLimit": 150000,
                     "rate": 0.45
                 }
             ]

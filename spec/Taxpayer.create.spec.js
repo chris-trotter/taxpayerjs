@@ -241,5 +241,62 @@ describe('Taxpayer class', () => {
 
             expect(john.basicRateTax).to.equal(expectedTax);
         });
+    });
+
+    describe('Higher rate band', () => {
+        it('should be nil if income is below higher rate lower limit', () => {
+            let john, expectedHigherRateTax;
+            john = new Taxpayer({});
+            let {lowerLimit} = john.rules.incomeTax.bands[1];
+
+            john.grossSalary = lowerLimit - 1000;
+            expectedHigherRateTax = 0;
+            
+            expect(john.higherRateTax).to.equal(expectedHigherRateTax);
+        });
+
+        it('should be equal to range * rate if salary is double the upper limit', () => {
+            let john, expectedHigherRateTax;
+            john = new Taxpayer({});
+            let {lowerLimit, upperLimit, rate} = john.rules.incomeTax.bands[1];
+            
+            john.grossSalary = upperLimit * 2;
+            expectedHigherRateTax = (upperLimit - lowerLimit) * rate;
+
+            expect(john.higherRateTax).to.equal(expectedHigherRateTax);
+        });
+    });
+
+    describe('Additional rate band', () => {
+        it('should should be nil if income is below higher rate lower limit', () => {
+            let john, expectedAdditionalRateTax;
+            john = new Taxpayer({});
+            let {lowerLimit} = john.rules.incomeTax.bands[2];
+
+            john.grossSalary = lowerLimit - 1000;
+            expectedAdditionalRateTax = 0;
+
+            expect(john.additionalRateTax).to.equal(expectedAdditionalRateTax);
+        });
+
+        it('should result in higher tax for every additional unit of income over the lower limit', () => {
+            let john, sarah, expectedTaxDifference, rate;
+            john = new Taxpayer({});
+            sarah = new Taxpayer({});
+
+            let johnLowerLimit  = john.rules.incomeTax.bands[2].lowerLimit, 
+                johnRate        = john.rules.incomeTax.bands[2].rate, 
+                sarahLowerLimit  = sarah.rules.incomeTax.bands[2].lowerLimit, 
+                sarahRate        = sarah.rules.incomeTax.bands[2].rate;
+            
+            rate = (johnRate === sarahRate) ? johnRate : 0;
+
+            john.grossSalary = johnLowerLimit + 3000;
+            sarah.grossSalary = sarahLowerLimit + 1000;
+
+            expectedTaxDifference = (john.grossSalary - sarah.grossSalary) * rate;
+
+            expect(john.additionalRateTax - sarah.additionalRateTax).to.equal(expectedTaxDifference);
+        })
     })
 });

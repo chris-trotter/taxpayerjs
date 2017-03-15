@@ -81,13 +81,63 @@ class Taxpayer {
         return grossSalary - personalAllowance;
     }
 
-    get basicRateTax() {
-        let range, tax,
+    get basicRateUsage() {
+        let range,
             {taxableIncome} = this,
-            {upperLimit, rate} = this.rules.incomeTax.bands[0];
+            {upperLimit} = this.rules.incomeTax.bands[0];
         
         range = Math.min(taxableIncome, upperLimit);
-        tax = range * rate;
+
+        return range;
+    }
+
+    get basicRateTax() {
+        let tax,
+            {basicRateUsage} = this,
+            {rate} = this.rules.incomeTax.bands[0];
+        
+        tax = basicRateUsage * rate;
+
+        return tax;
+    }
+
+    get higherRateUsage() {
+        let range, tax,
+            {taxableIncome, basicRateUsage} = this,
+            {lowerLimit, upperLimit, rate} = this.rules.incomeTax.bands[1];
+
+        range = Math.min(   upperLimit - lowerLimit, 
+                            taxableIncome - basicRateUsage);
+                            
+        return range;
+    }
+
+    get higherRateTax() {
+        let tax,
+            {higherRateUsage} = this,
+            {rate} = this.rules.incomeTax.bands[1];
+        
+        tax = higherRateUsage * rate;
+
+        return tax;
+    }
+
+    get additionalRateUsage() {
+        let range, tax,
+            {taxableIncome, basicRateUsage, higherRateUsage} = this,
+            {rate} = this.rules.incomeTax.bands[2];
+
+        range = taxableIncome - (higherRateUsage + basicRateUsage);
+                            
+        return range;
+    }
+
+    get additionalRateTax() {
+        let tax,
+            {additionalRateUsage} = this,
+            {rate} = this.rules.incomeTax.bands[2];
+        
+        tax = additionalRateUsage * rate;
 
         return tax;
     }

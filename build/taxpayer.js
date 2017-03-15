@@ -493,17 +493,80 @@ var Taxpayer = function () {
             return grossSalary - personalAllowance;
         }
     }, {
+        key: 'basicRateUsage',
+        get: function get() {
+            var range = void 0,
+                taxableIncome = this.taxableIncome,
+                upperLimit = this.rules.incomeTax.bands[0].upperLimit;
+
+
+            range = Math.min(taxableIncome, upperLimit);
+
+            return range;
+        }
+    }, {
         key: 'basicRateTax',
+        get: function get() {
+            var tax = void 0,
+                basicRateUsage = this.basicRateUsage,
+                rate = this.rules.incomeTax.bands[0].rate;
+
+
+            tax = basicRateUsage * rate;
+
+            return tax;
+        }
+    }, {
+        key: 'higherRateUsage',
         get: function get() {
             var range = void 0,
                 tax = void 0,
                 taxableIncome = this.taxableIncome,
-                _rules$incomeTax$band = this.rules.incomeTax.bands[0],
+                basicRateUsage = this.basicRateUsage,
+                _rules$incomeTax$band = this.rules.incomeTax.bands[1],
+                lowerLimit = _rules$incomeTax$band.lowerLimit,
                 upperLimit = _rules$incomeTax$band.upperLimit,
                 rate = _rules$incomeTax$band.rate;
 
-            range = Math.min(taxableIncome, upperLimit);
-            tax = range * rate;
+            range = Math.min(upperLimit - lowerLimit, taxableIncome - basicRateUsage);
+
+            return range;
+        }
+    }, {
+        key: 'higherRateTax',
+        get: function get() {
+            var tax = void 0,
+                higherRateUsage = this.higherRateUsage,
+                rate = this.rules.incomeTax.bands[1].rate;
+
+
+            tax = higherRateUsage * rate;
+
+            return tax;
+        }
+    }, {
+        key: 'additionalRateUsage',
+        get: function get() {
+            var range = void 0,
+                tax = void 0,
+                taxableIncome = this.taxableIncome,
+                basicRateUsage = this.basicRateUsage,
+                higherRateUsage = this.higherRateUsage,
+                rate = this.rules.incomeTax.bands[2].rate;
+
+            range = taxableIncome - (higherRateUsage + basicRateUsage);
+
+            return range;
+        }
+    }, {
+        key: 'additionalRateTax',
+        get: function get() {
+            var tax = void 0,
+                additionalRateUsage = this.additionalRateUsage,
+                rate = this.rules.incomeTax.bands[2].rate;
+
+
+            tax = additionalRateUsage * rate;
 
             return tax;
         }
@@ -547,12 +610,15 @@ var config = {
                 "incomeLimit": 100000
             },
             "bands": [{
+                "lowerLimit": 0,
                 "upperLimit": 31785,
                 "rate": 0.2
             }, {
+                "lowerLimit": 31785,
                 "upperLimit": 150000,
                 "rate": 0.40
             }, {
+                "lowerLimit": 150000,
                 "rate": 0.45
             }]
         }
@@ -574,12 +640,15 @@ var config = {
                 "incomeLimit": 150000
             },
             "bands": [{
+                "lowerLimit": 0,
                 "upperLimit": 31865,
                 "rate": 0.2
             }, {
+                "lowerLimit": 31865,
                 "upperLimit": 150000,
                 "rate": 0.40
             }, {
+                "lowerLimit": 150000,
                 "rate": 0.45
             }]
         }
@@ -601,12 +670,15 @@ var config = {
                 "incomeLimit": 100000
             },
             "bands": [{
+                "lowerLimit": 0,
                 "upperLimit": 32010,
                 "rate": 0.2
             }, {
+                "lowerLimit": 0,
                 "upperLimit": 150000,
                 "rate": 0.40
             }, {
+                "lowerLimit": 150000,
                 "rate": 0.45
             }]
         }
