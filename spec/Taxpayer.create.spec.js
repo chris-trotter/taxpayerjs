@@ -75,9 +75,9 @@ describe('Taxpayer class', () => {
             let john = new Taxpayer({age: 50});
             let {incomeLimit} = john.rules.incomeTax.personalAllowance;
             john.grossSalary = incomeLimit + 5000;
-            
+
             expect(john.maxPersonalAllowance)
-                .to.be.lessThan(john.rules.incomeTax.personalAllowance.base)
+                .to.be.lessThan(john.rules.incomeTax.personalAllowance.standard)
                 .and.to.be.at.least(0);
         });
 
@@ -87,7 +87,7 @@ describe('Taxpayer class', () => {
             john.grossSalary = incomeLimit - 5000;
 
             expect(john.maxPersonalAllowance)
-                .to.equal(john.rules.incomeTax.personalAllowance.base);
+                .to.equal(john.rules.incomeTax.personalAllowance.standard);
         });
 
         it('should be nil if gross salary is double PA Income Limit', () => {            
@@ -102,15 +102,33 @@ describe('Taxpayer class', () => {
     describe('Personal allowance', () => {
         it('should match gross salary if below maximum personal allowance', () => {
             let john = new Taxpayer({});
-            let grossSalary = john.rules.incomeTax.personalAllowance.base - 1000;
+            let grossSalary = john.rules.incomeTax.personalAllowance.standard - 1000;
             john.grossSalary = grossSalary;
 
             expect(john.personalAllowance).to.equal(grossSalary);
         });
 
+        it('should be above nil if salary is below maximum income level', () => {
+            let john = new Taxpayer({grossSalary: 70000});
+
+            expect(john.personalAllowance).to.be.greaterThan(0);
+        });
+
+        it('should match tax code attribute if provided', () => {
+            let john = new Taxpayer({grossSalary: 50000, taxCode: '700L'});
+
+            expect(john.personalAllowance).to.equal(7000);
+        });
+
+        it('should apply upper limit to tax code attribute if provided', () => {
+            let john = new Taxpayer({grossSalary: 150000, taxCode: '700L'});
+
+            expect(john.personalAllowance).to.equal(0);
+        });
+
         it('should equal maximum personal allowance if gross salary over maximum personal allowance', () => {
             let john = new Taxpayer({});
-            let grossSalary = john.rules.incomeTax.personalAllowance.base + 1000;
+            let grossSalary = john.rules.incomeTax.personalAllowance.standard + 1000;
             john.grossSalary = grossSalary;
 
             expect(john.personalAllowance).to.equal(john.maxPersonalAllowance);
@@ -207,7 +225,7 @@ describe('Taxpayer class', () => {
     describe('Taxable income', () => {
         it('should be nil if gross Salary is below the personal allowance', () => {
             let john = new Taxpayer({});
-            let grossSalary = john.rules.incomeTax.personalAllowance.base - 1000;
+            let grossSalary = john.rules.incomeTax.personalAllowance.standard - 1000;
             john.grossSalary = grossSalary;
 
             expect(john.taxableIncome).to.equal(0);
@@ -222,7 +240,7 @@ describe('Taxpayer class', () => {
     describe('Basic rate band', () => {
         it('should be nil if grossSalary is maximum below personal allowance', () => {
             let john = new Taxpayer({});
-            let grossSalary = john.rules.incomeTax.personalAllowance.base - 1000;
+            let grossSalary = john.rules.incomeTax.personalAllowance.standard - 1000;
             john.grossSalary = grossSalary;
 
             expect(john.basicRateTax).to.equal(0);
@@ -234,9 +252,9 @@ describe('Taxpayer class', () => {
             john = new Taxpayer({});
 
             let {upperLimit, rate} = john.rules.incomeTax.bands[0],
-                {base} = john.rules.incomeTax.personalAllowance;
+                {standard} = john.rules.incomeTax.personalAllowance;
 
-            john.grossSalary = base + upperLimit;
+            john.grossSalary = standard + upperLimit;
             expectedTax = upperLimit * rate;
 
             expect(john.basicRateTax).to.equal(expectedTax);

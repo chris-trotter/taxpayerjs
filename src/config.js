@@ -17,7 +17,7 @@ const config = {
                 }
             },
             "personalAllowance": {
-                "base": 10600,
+                "standard": 10600,
                 "incomeLimit": 100000
             },
             "bands": [
@@ -51,7 +51,7 @@ const config = {
                 }
             },
             "personalAllowance": {
-                "base": 10600,
+                "standard": 10600,
                 "incomeLimit": 150000
             },
             "bands": [
@@ -85,7 +85,7 @@ const config = {
                 }
             },
             "personalAllowance": {
-                "base": 10600,
+                "standard": 10600,
                 "incomeLimit": 100000
             },
             "bands": [

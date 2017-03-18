@@ -417,6 +417,22 @@ var Taxpayer = function () {
     }
 
     _createClass(Taxpayer, [{
+        key: 'taxCodePA',
+        value: function taxCodePA() {
+            // If a taxpayer is created with a tax code then the
+            // personal allowance should be extracted.
+
+            var personalAllowance = void 0,
+                taxCode = this.taxCode;
+
+
+            if (taxCode) {
+                personalAllowance = Number(taxCode.match(/\d+/)[0]) * 10;
+            }
+
+            return personalAllowance;
+        }
+    }, {
         key: 'taxYear',
         get: function get() {
             return this._taxYear;
@@ -432,19 +448,34 @@ var Taxpayer = function () {
             }
         }
     }, {
+        key: 'basePersonalAllowance',
+        get: function get() {
+            // If the user has a tax code, then this will override
+            // the statutory personal allowance.
+            var standard = this.rules.incomeTax.personalAllowance.standard,
+                taxCodePA = this.taxCodePA();
+
+
+            return taxCodePA || standard;
+        }
+    }, {
         key: 'maxPersonalAllowance',
         get: function get() {
-            // Return the revised maximum personal allowance after considering user's tax levels
+            // Return the revised maximum personal allowance 
+            // after considering user's tax circumstances.
+
             var modifier = void 0,
-                _rules$incomeTax$pers = this.rules.incomeTax.personalAllowance,
-                base = _rules$incomeTax$pers.base,
-                incomeLimit = _rules$incomeTax$pers.incomeLimit,
-                grossSalary = this.grossSalary;
+                incomeLimit = this.rules.incomeTax.personalAllowance.incomeLimit,
+                grossSalary = this.grossSalary,
+                basePersonalAllowance = this.basePersonalAllowance;
 
 
-            modifier = Math.max(Math.min((grossSalary - incomeLimit) / 2, base), 0);
+            var lowest = 0,
+                highest = basePersonalAllowance;
 
-            return base - modifier;
+            modifier = Math.max(Math.min((grossSalary - incomeLimit) / 2, highest), lowest);
+
+            return basePersonalAllowance - modifier;
         }
     }, {
         key: 'personalAllowance',
@@ -606,7 +637,7 @@ var config = {
                 }
             },
             "personalAllowance": {
-                "base": 10600,
+                "standard": 10600,
                 "incomeLimit": 100000
             },
             "bands": [{
@@ -636,7 +667,7 @@ var config = {
                 }
             },
             "personalAllowance": {
-                "base": 10600,
+                "standard": 10600,
                 "incomeLimit": 150000
             },
             "bands": [{
@@ -666,7 +697,7 @@ var config = {
                 }
             },
             "personalAllowance": {
-                "base": 10600,
+                "standard": 10600,
                 "incomeLimit": 100000
             },
             "bands": [{
@@ -702,8 +733,7 @@ var defaultAttributes = {
     grossSalary: 0.0,
     studentLoanRepayments: false,
     studentLoanRepaymentsPlan: 1,
-    pensionSacrificePercent: 0.00,
-    taxCode: '1200L'
+    pensionSacrificePercent: 0.00
 };
 
 exports.default = defaultAttributes;

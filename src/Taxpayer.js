@@ -15,7 +15,6 @@ class Taxpayer {
         // Assign tax payer's attributes to the base of the instantiated object
         // This creates a simple API for users
         Object.assign(this, DEFAULT_ATTRIBUTES, attributes);
-
     }
 
     get taxYear(){
@@ -33,21 +32,49 @@ class Taxpayer {
         }
     }
 
-    get maxPersonalAllowance(){
-        // Return the revised maximum personal allowance after considering user's tax levels
-        let modifier,
-            {base, incomeLimit} = this.rules.incomeTax.personalAllowance,
-            {grossSalary} = this;
+    taxCodePA() {
+        // If a taxpayer is created with a tax code then the
+        // personal allowance should be extracted.
 
+        let personalAllowance,
+            {taxCode} = this;
+        
+        if (taxCode) {
+            personalAllowance = Number(taxCode.match(/\d+/)[0]) * 10;
+        }
+
+        return personalAllowance;
+    }
+
+    get basePersonalAllowance() {
+        // If the user has a tax code, then this will override
+        // the statutory personal allowance.
+        let {standard} = this.rules.incomeTax.personalAllowance,
+            taxCodePA = this.taxCodePA();
+
+        return taxCodePA || standard;
+    }
+
+    get maxPersonalAllowance(){
+        // Return the revised maximum personal allowance 
+        // after considering user's tax circumstances.
+
+        let modifier,
+            {incomeLimit} = this.rules.incomeTax.personalAllowance,
+            {grossSalary, basePersonalAllowance} = this;
+        
+        let lowest  = 0,
+            highest = basePersonalAllowance;
+        
         modifier = Math.max(
             Math.min(
                 ((grossSalary - incomeLimit) / 2), 
-                base
-            ), 
-            0
+                highest
+            ),
+            lowest
         );
 
-        return base - modifier;
+        return basePersonalAllowance - modifier;
     }
 
     get personalAllowance() {
