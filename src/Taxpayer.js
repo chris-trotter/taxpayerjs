@@ -7,16 +7,30 @@ import has from 'lodash/has';
 class Taxpayer {
     constructor(attributes, taxYear = CONFIG.DEFAULT_TAX_YEAR) {
 
+        // If a number is passed as attributes, this is treated as
+        // the taxpayer's gross salary
+        if (typeof(attributes) === 'number') {
+            Object.assign(this, 
+                DEFAULT_ATTRIBUTES, 
+                {grossSalary: attributes}
+            );
+        }
+
+        // If an object is passed as attributes,
+        // these are applied as instantiated properties
+        if (typeof(attributes) === 'object') {
+            Object.assign(this, 
+                DEFAULT_ATTRIBUTES, 
+                attributes
+            );
+        }
+
         // Throw error if no attributes provided
         if (!attributes) {
             throw Error (CONFIG.ERRORS.MISSING_ATTRIBUTES);
         }
 
         this.taxYear = taxYear;
-
-        // Assign tax payer's attributes to the base of the instantiated object
-        // This creates a simple API for users
-        Object.assign(this, DEFAULT_ATTRIBUTES, attributes);
     }
 
     get taxYear(){

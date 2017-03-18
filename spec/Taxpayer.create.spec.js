@@ -40,6 +40,11 @@ describe('Taxpayer class', () => {
             expect(john.grossSalary).to.equal(50000);
         });
 
+        it('treats number only on instantiation as gross salary', () => {
+            let john = new Taxpayer(50000);
+            expect(john.grossSalary).to.equal(50000);
+        })
+
         it('instance can set a tax year on instantiation', () => {
             let john = new Taxpayer({}, '2013/2014');
             expect(john.taxYear).to.equal('2013/2014');
