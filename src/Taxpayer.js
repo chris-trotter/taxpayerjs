@@ -168,6 +168,14 @@ class Taxpayer {
 
         return tax;
     }
+
+    get taxPayable() {
+        let  {basicRateTax, higherRateTax, additionalRateTax} = this;
+        
+        return  basicRateTax + 
+                higherRateTax + 
+                additionalRateTax;
+    }
 }
 
 export default Taxpayer;

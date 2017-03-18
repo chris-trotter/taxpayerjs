@@ -315,6 +315,21 @@ describe('Taxpayer class', () => {
             expectedTaxDifference = (john.grossSalary - sarah.grossSalary) * rate;
 
             expect(john.additionalRateTax - sarah.additionalRateTax).to.equal(expectedTaxDifference);
-        })
-    })
+        });
+    });
+
+    describe('Income tax payable', () => {
+        it('should equal the sum of the parts', () => {
+            let john = new Taxpayer({salary: 50000});
+            let {basicRateTax, higherRateTax, additionalRateTax} = john;
+            let taxPayable = basicRateTax + higherRateTax + additionalRateTax;
+
+            expect(john.taxPayable).to.equal(taxPayable);
+        });
+
+        it('should equal nil if taxpayer has no income', () => {
+            let john = new Taxpayer({});
+            expect(john.taxPayable).to.equal(0);
+        });
+    });
 });
