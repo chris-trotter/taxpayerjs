@@ -1,3 +1,5 @@
+'use strict';
+
 import CONFIG from './config';
 import DEFAULT_ATTRIBUTES from './default-attributes';
 import has from 'lodash/has';
