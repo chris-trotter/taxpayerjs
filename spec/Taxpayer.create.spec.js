@@ -397,6 +397,30 @@ describe('Taxpayer class', () => {
 
                 expect(john.NatInsUelUsage).to.equal(grossSalary - upperLimitPT);
             });
+
+            it('should charge no UEL tax when tax payer has no income', () => {
+                let john = new Taxpayer({});
+                expect(john.NatInsUelTax).to.equal(0);
+            });
+
+            it('should charge tax when tax payer income is above lower threshold', () => {
+                let john = new Taxpayer({});
+                let {lowerLimit} = john.rules.nationalInsurance.bands[1];
+                john.grossSalary = lowerLimit + 1000;
+
+                expect(john.NatInsUelTax).to.be.greaterThan(0);
+            });
+
+            it('should charge tax equal to the UEL usage times the UEL rate', () => {
+                let john = new Taxpayer(100000);
+                let {grossSalary} = john,
+                    {lowerLimit, rate} = john.rules.nationalInsurance.bands[1],
+                    expectedTax = (grossSalary - lowerLimit) * rate;
+                
+                expect(john.NatInsUelTax).to.be.greaterThan(0);
+                expect(john.NatInsUelTax).to.equal(expectedTax);
+            });
+            
         });
         
     });

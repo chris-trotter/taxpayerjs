@@ -233,6 +233,18 @@ class Taxpayer {
 
         return usage;
     }
+
+    get NatInsUelTax() {
+        let tax,
+            {NatInsUelUsage} = this,
+            {rate} = this.rules.nationalInsurance.bands[1];
+        
+        // Deduct NI tax free amount prior to determining liability
+        tax = NatInsUelUsage * rate;
+
+        return tax;
+    }
+
 }
 
 export default Taxpayer;
