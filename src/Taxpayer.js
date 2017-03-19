@@ -107,7 +107,7 @@ class Taxpayer {
     
     get studentLoanRepayment() {
         let {grossSalary, studentLoanRepayments, studentLoanRepaymentsPlan} = this;
-        let {threshold, rate} = this.rules.incomeTax.studentLoanRepayments['plan' + studentLoanRepaymentsPlan],
+        let {threshold, rate} = this.rules.studentLoanRepayments['plan' + studentLoanRepaymentsPlan],
             rateableSalary, repayment = 0;
         
         if (studentLoanRepayments) {
@@ -197,6 +197,19 @@ class Taxpayer {
         let {grossSalary, pensionSacrifice, studentLoanRepayment, taxPayable} = this;
         
         return grossSalary - (pensionSacrifice + studentLoanRepayment + taxPayable);
+    }
+
+    get NatInsPTUsage() {
+        let usage, taxableSalary,
+            {grossSalary} = this,
+            {lowerLimit, upperLimit} = this.rules.nationalInsurance.bands[0];
+        
+        // Deduct NI tax free amount prior to determining liability
+        taxableSalary = Math.max(grossSalary - lowerLimit, 0);
+
+        usage = Math.min(taxableSalary, upperLimit - lowerLimit);
+
+        return usage;
     }
 }
 

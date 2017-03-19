@@ -5,17 +5,30 @@ const config = {
         "INVALID_TAX_YEAR": "A valid tax year was not provided."
     },
     "2015/2016": {
-        "incomeTax": {
-            "studentLoanRepayments": {
-                "plan1": {
-                    "threshold": "17495",
-                    "rate": 0.09
+        "nationalInsurance": {
+            "bands": [
+                {
+                    "lowerLimit": 8064,
+                    "upperLimit": 42996,
+                    "rate": 0.12
                 },
-                "plan2": {
-                    "threshold": "21000",
-                    "rate": 0.09
+                {
+                    "lowerLimit": 42997,
+                    "rate": 0.02
                 }
+            ]
+        },
+        "studentLoanRepayments": {
+            "plan1": {
+                "threshold": "17495",
+                "rate": 0.09
             },
+            "plan2": {
+                "threshold": "21000",
+                "rate": 0.09
+            }
+        },
+        "incomeTax": {
             "personalAllowance": {
                 "standard": 10600,
                 "incomeLimit": 100000

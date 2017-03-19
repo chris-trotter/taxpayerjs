@@ -198,8 +198,8 @@ describe('Taxpayer class', () => {
             let john = new Taxpayer(johnSettings);
             let sarah = new Taxpayer(sarahSettings);
 
-            john.grossSalary = john.rules.incomeTax.studentLoanRepayments.plan1.threshold - 1000;
-            sarah.grossSalary = sarah.rules.incomeTax.studentLoanRepayments.plan2.threshold - 1000;
+            john.grossSalary = john.rules.studentLoanRepayments.plan1.threshold - 1000;
+            sarah.grossSalary = sarah.rules.studentLoanRepayments.plan2.threshold - 1000;
             
             expect(john.studentLoanRepayment).to.equal(0);
             expect(sarah.studentLoanRepayment).to.equal(0);
@@ -219,8 +219,8 @@ describe('Taxpayer class', () => {
             let john = new Taxpayer(johnSettings);
             let sarah = new Taxpayer(sarahSettings);
 
-            john.grossSalary = john.rules.incomeTax.studentLoanRepayments.plan1.threshold * 2;
-            sarah.grossSalary = sarah.rules.incomeTax.studentLoanRepayments.plan2.threshold * 2;
+            john.grossSalary = john.rules.studentLoanRepayments.plan1.threshold * 2;
+            sarah.grossSalary = sarah.rules.studentLoanRepayments.plan2.threshold * 2;
 
             expect(john.studentLoanRepayment).to.be.greaterThan(0);
             expect(sarah.studentLoanRepayment).to.be.greaterThan(0);
@@ -355,5 +355,21 @@ describe('Taxpayer class', () => {
 
             expect(john.takeHomePay).to.equal(takeHomePay);
         });
+    });
+
+    describe('National insurance', () => {
+        describe('Primary threshold', () => {
+            it('usage should be nil if tax payer has no income', () => {
+                let john = new Taxpayer({});
+                expect(john.NatInsPTUsage).to.equal(0);
+            });
+
+            it('should be the difference between lower and upper limit for a high earner', () => {
+                let john = new Taxpayer(100000);
+                let {lowerLimit, upperLimit} = john.rules.nationalInsurance.bands[0];
+                expect(john.NatInsPTUsage).to.equal(upperLimit - lowerLimit);
+            });
+        });
+        
     });
 });

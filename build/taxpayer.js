@@ -378,6 +378,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -404,16 +406,24 @@ var Taxpayer = function () {
 
         _classCallCheck(this, Taxpayer);
 
+        // If a number is passed as attributes, this is treated as
+        // the taxpayer's gross salary
+        if (typeof attributes === 'number') {
+            _extends(this, _defaultAttributes2.default, { grossSalary: attributes });
+        }
+
+        // If an object is passed as attributes,
+        // these are applied as instantiated properties
+        if ((typeof attributes === 'undefined' ? 'undefined' : _typeof(attributes)) === 'object') {
+            _extends(this, _defaultAttributes2.default, attributes);
+        }
+
         // Throw error if no attributes provided
         if (!attributes) {
             throw Error(_config2.default.ERRORS.MISSING_ATTRIBUTES);
         }
 
         this.taxYear = taxYear;
-
-        // Assign tax payer's attributes to the base of the instantiated object
-        // This creates a simple API for users
-        _extends(this, _defaultAttributes2.default, attributes);
     }
 
     _createClass(Taxpayer, [{
@@ -500,9 +510,9 @@ var Taxpayer = function () {
             var grossSalary = this.grossSalary,
                 studentLoanRepayments = this.studentLoanRepayments,
                 studentLoanRepaymentsPlan = this.studentLoanRepaymentsPlan;
-            var _rules$incomeTax$stud = this.rules.incomeTax.studentLoanRepayments['plan' + studentLoanRepaymentsPlan],
-                threshold = _rules$incomeTax$stud.threshold,
-                rate = _rules$incomeTax$stud.rate,
+            var _rules$studentLoanRep = this.rules.studentLoanRepayments['plan' + studentLoanRepaymentsPlan],
+                threshold = _rules$studentLoanRep.threshold,
+                rate = _rules$studentLoanRep.rate,
                 rateableSalary = void 0,
                 repayment = 0;
 
@@ -601,6 +611,27 @@ var Taxpayer = function () {
 
             return tax;
         }
+    }, {
+        key: 'taxPayable',
+        get: function get() {
+            var basicRateTax = this.basicRateTax,
+                higherRateTax = this.higherRateTax,
+                additionalRateTax = this.additionalRateTax;
+
+
+            return basicRateTax + higherRateTax + additionalRateTax;
+        }
+    }, {
+        key: 'takeHomePay',
+        get: function get() {
+            var grossSalary = this.grossSalary,
+                pensionSacrifice = this.pensionSacrifice,
+                studentLoanRepayment = this.studentLoanRepayment,
+                taxPayable = this.taxPayable;
+
+
+            return grossSalary - (pensionSacrifice + studentLoanRepayment + taxPayable);
+        }
     }]);
 
     return Taxpayer;
@@ -625,17 +656,17 @@ var config = {
         "INVALID_TAX_YEAR": "A valid tax year was not provided."
     },
     "2015/2016": {
-        "incomeTax": {
-            "studentLoanRepayments": {
-                "plan1": {
-                    "threshold": "17495",
-                    "rate": 0.09
-                },
-                "plan2": {
-                    "threshold": "21000",
-                    "rate": 0.09
-                }
+        "studentLoanRepayments": {
+            "plan1": {
+                "threshold": "17495",
+                "rate": 0.09
             },
+            "plan2": {
+                "threshold": "21000",
+                "rate": 0.09
+            }
+        },
+        "incomeTax": {
             "personalAllowance": {
                 "standard": 10600,
                 "incomeLimit": 100000
