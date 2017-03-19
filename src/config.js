@@ -6,6 +6,7 @@ const config = {
     },
     "2015/2016": {
         "nationalInsurance": {
+            "pensionAge": 65,
             "bands": [
                 {
                     "lowerLimit": 8064,
@@ -52,8 +53,21 @@ const config = {
         }
     },
     "2014/2015": {
-        "incomeTax": {
-            "studentLoanRepayments": {
+        "nationalInsurance": {
+            "pensionAge": 65,
+            "bands": [
+                {
+                    "lowerLimit": 8064,
+                    "upperLimit": 42996,
+                    "rate": 0.12
+                },
+                {
+                    "lowerLimit": 42996,
+                    "rate": 0.02
+                }
+            ]
+        },
+        "studentLoanRepayments": {
                 "plan1": {
                     "threshold": "17495",
                     "rate": 0.09
@@ -63,6 +77,7 @@ const config = {
                     "rate": 0.09
                 }
             },
+        "incomeTax": {
             "personalAllowance": {
                 "standard": 10600,
                 "incomeLimit": 150000
@@ -86,8 +101,21 @@ const config = {
         }
     },
     "2013/2014": {
-        "incomeTax": {
-            "studentLoanRepayments": {
+        "nationalInsurance": {
+            "pensionAge": 65,
+            "bands": [
+                {
+                    "lowerLimit": 8064,
+                    "upperLimit": 42996,
+                    "rate": 0.12
+                },
+                {
+                    "lowerLimit": 42996,
+                    "rate": 0.02
+                }
+            ]
+        },
+        "studentLoanRepayments": {
                 "plan1": {
                     "threshold": "17495",
                     "rate": 0.09
@@ -97,6 +125,7 @@ const config = {
                     "rate": 0.09
                 }
             },
+        "incomeTax": {
             "personalAllowance": {
                 "standard": 10600,
                 "incomeLimit": 100000
