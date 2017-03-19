@@ -337,4 +337,23 @@ describe('Taxpayer class', () => {
             expect(john.taxPayable).to.equal(0);
         });
     });
+
+    describe('Take home pay', () => {
+        it('should agree to gross salary less all voluntary and taxable deductions', () => {
+            let johnSettings = {
+                grossSalary: 50000,
+                pensionSacrificePercent: 0.05,
+                studentLoanRepayments: true
+            };
+            let john = new Taxpayer(johnSettings);
+
+            let {grossSalary, studentLoanRepayment, pensionSacrifice, taxPayable} = john;
+            let takeHomePay =   grossSalary -
+                                studentLoanRepayment -
+                                pensionSacrifice -
+                                taxPayable;
+
+            expect(john.takeHomePay).to.equal(takeHomePay);
+        });
+    });
 });

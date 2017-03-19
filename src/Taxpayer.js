@@ -192,6 +192,12 @@ class Taxpayer {
                 higherRateTax + 
                 additionalRateTax;
     }
+
+    get takeHomePay() {
+        let {grossSalary, pensionSacrifice, studentLoanRepayment, taxPayable} = this;
+        
+        return grossSalary - (pensionSacrifice + studentLoanRepayment + taxPayable);
+    }
 }
 
 export default Taxpayer;
