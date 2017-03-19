@@ -86,6 +86,16 @@ describe('Taxpayer class', () => {
                 .and.to.be.at.least(0);
         });
 
+        it('should be increased if the tax payer is blind', () => {
+            let john = new Taxpayer(50000);
+
+            let normalPA = john.maxPersonalAllowance;
+            john.blind = true;
+            let blindPA = john.maxPersonalAllowance;
+
+            expect(blindPA).to.be.greaterThan(normalPA);
+        })
+
         it('should remain unchanged if gross salary is below the PA Income Limit', () => {
             let john = new Taxpayer({age: 50});
             let {incomeLimit} = john.rules.incomeTax.personalAllowance;
@@ -357,6 +367,15 @@ describe('Taxpayer class', () => {
 
             expect(john.takeHomePay).to.equal(takeHomePay);
         });
+
+        it('should be greater for a blind person than a non-blind person', () => {
+            let john = new Taxpayer(50000);
+            let normalTakeHomePay = john.takeHomePay;
+            john.blind = true;
+            let blindTakeHomePay = john.takeHomePay;
+
+            expect(blindTakeHomePay).to.be.greaterThan(normalTakeHomePay);
+        })
     });
 
     describe('National insurance', () => {

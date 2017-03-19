@@ -31,6 +31,7 @@ const config = {
         },
         "incomeTax": {
             "personalAllowance": {
+                "blindTopup": 2290,
                 "standard": 10600,
                 "incomeLimit": 100000
             },
@@ -79,6 +80,7 @@ const config = {
             },
         "incomeTax": {
             "personalAllowance": {
+                "blindTopup": 2230,
                 "standard": 10600,
                 "incomeLimit": 150000
             },
@@ -127,6 +129,7 @@ const config = {
             },
         "incomeTax": {
             "personalAllowance": {
+                "blindTopup": 2160,
                 "standard": 10600,
                 "incomeLimit": 100000
             },

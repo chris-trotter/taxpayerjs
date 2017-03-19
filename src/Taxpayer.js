@@ -65,10 +65,19 @@ class Taxpayer {
     get basePersonalAllowance() {
         // If the user has a tax code, then this will override
         // the statutory personal allowance.
-        let {standard} = this.rules.incomeTax.personalAllowance,
+        let base = 0, additionalAllowances = 0,
+            {standard, blindTopup} = this.rules.incomeTax.personalAllowance,
+            {blind} = this,
             taxCodePA = this.taxCodePA();
 
-        return taxCodePA || standard;
+        // If tax payer is blind, they are entitled to the blind top-up
+        if (blind) {
+            additionalAllowances += blindTopup;
+        }
+        
+        base = standard + additionalAllowances;
+
+        return taxCodePA || base;
     }
 
     get maxPersonalAllowance(){
