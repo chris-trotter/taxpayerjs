@@ -59,9 +59,9 @@ describe('Taxpayer class', () => {
         it('changing tax year results in change in tax rules base', () => {
             let john = new Taxpayer({});
             john.taxYear = '2014/2015';
-            expect(john.rules).to.equal(CONFIG['2014/2015']);
+            expect(JSON.stringify(john.rules)).to.equal(JSON.stringify(CONFIG['2014/2015']));
             john.taxYear = '2013/2014';
-            expect(john.rules).to.equal(CONFIG['2013/2014']);
+            expect(JSON.stringify(john.rules)).to.equal(JSON.stringify(CONFIG['2013/2014']));
         });
 
         it('should add default tax payer attributes', () => {
@@ -203,6 +203,14 @@ describe('Taxpayer class', () => {
             expect(john.pensionSacrifice).to.equal(2500);
         });
     });
+
+    describe('Pay period', () => {
+        it('should adjust rules thresholds when changed', () => {
+            let john = new Taxpayer(1000);
+            john.payPeriod('weekly');
+            expect(john.basicRateTax).to.be.greaterThan(0);
+        });
+    })
 
     describe('Gift aid donations', () => {
         it('should increase deductions', () => {

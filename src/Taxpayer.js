@@ -3,6 +3,9 @@
 import CONFIG from './config';
 import DEFAULT_ATTRIBUTES from './default-attributes';
 import has from 'lodash/has';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import cloneDeep from 'lodash/clonedeep';
 
 class Taxpayer {
     constructor(attributes, taxYear = CONFIG.DEFAULT_TAX_YEAR) {
@@ -37,12 +40,39 @@ class Taxpayer {
         return this._taxYear;
     }
 
+    payPeriod(payPeriod){
+        let scaledKeys = [
+                'nationalInsurance.bands[0].lowerLimit',
+                'nationalInsurance.bands[0].upperLimit',
+                'nationalInsurance.bands[1].lowerLimit',
+                'nationalInsurance.bands[1].upperLimit',
+                'studentLoanRepayments.plan1.threshold',
+                'studentLoanRepayments.plan2.threshold',
+                'incomeTax.personalAllowance.blindTopup',
+                'incomeTax.personalAllowance.standard',
+                'incomeTax.personalAllowance.incomeLimit',
+                'incomeTax.bands[0].lowerLimit',
+                'incomeTax.bands[0].upperLimit',
+                'incomeTax.bands[1].lowerLimit',
+                'incomeTax.bands[1].upperLimit',
+                'incomeTax.bands[2].lowerLimit',
+                'incomeTax.bands[2].upperLimit',
+            ],
+            conversionFactor = CONFIG.PAY_PERIODS[payPeriod];
+
+        scaledKeys.forEach(item => {
+            let defaultVal = get(this.rules, item);
+            let newVal = Math.ceil(defaultVal / conversionFactor);
+            set(this.rules, item, newVal);
+        });
+    }
+
     set taxYear(taxYear){
         // Lookup provided tax year and assign the appropriate configuration
         this._taxYear = taxYear;
 
         if (has(CONFIG, taxYear)) {
-            this.rules = CONFIG[taxYear];
+            this.rules = Object.assign({}, cloneDeep(CONFIG[taxYear]));
         } else {
             throw Error (CONFIG.ERRORS.INVALID_TAX_YEAR);
         }

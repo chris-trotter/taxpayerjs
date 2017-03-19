@@ -4,6 +4,18 @@ const config = {
         "MISSING_ATTRIBUTES": "Tax payer attributes must be provided.",
         "INVALID_TAX_YEAR": "A valid tax year was not provided."
     },
+    "PAY_PERIODS": {
+        "annual": 1,
+        "year": 1,
+        "month": 12,
+        "monthly": 12,
+        "week": 52,
+        "weekly": 52,
+        "fortnight": 26,
+        "fortnightly": 26,
+        "day": 365,
+        "daily": 365
+    },
     "2015/2016": {
         "nationalInsurance": {
             "pensionAge": 65,
