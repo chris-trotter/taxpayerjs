@@ -245,6 +245,12 @@ class Taxpayer {
         return tax;
     }
 
+    get nationalInsurance() {
+        let {NatInsPtTax, NatInsUelTax} = this;
+
+        return NatInsPtTax + NatInsUelTax;
+    }
+
 }
 
 export default Taxpayer;

@@ -358,6 +358,14 @@ describe('Taxpayer class', () => {
     });
 
     describe('National insurance', () => {
+        it('should retrieve total national insurance payable by the tax payer', () => {
+            let john = new Taxpayer({});
+            let {NatInsPtTax, NatInsUelTax} = john,
+                expectedTax = NatInsPtTax + NatInsUelTax;
+            
+            expect(john.nationalInsurance).to.equal(expectedTax);
+        });
+
         describe('Primary threshold', () => {
             it('usage should be nil if tax payer has no income', () => {
                 let john = new Taxpayer({});
