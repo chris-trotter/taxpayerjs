@@ -211,6 +211,17 @@ class Taxpayer {
 
         return usage;
     }
+
+    get NatInsUELUsage() {
+        let usage, taxableSalary,
+            {grossSalary} = this,
+            {lowerLimit} = this.rules.nationalInsurance.bands[1];
+        
+        taxableSalary = grossSalary - lowerLimit;
+        usage = Math.max(taxableSalary, 0);
+
+        return usage;
+    }
 }
 
 export default Taxpayer;

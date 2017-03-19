@@ -13,7 +13,7 @@ const config = {
                     "rate": 0.12
                 },
                 {
-                    "lowerLimit": 42997,
+                    "lowerLimit": 42996,
                     "rate": 0.02
                 }
             ]

@@ -370,6 +370,21 @@ describe('Taxpayer class', () => {
                 expect(john.NatInsPTUsage).to.equal(upperLimit - lowerLimit);
             });
         });
+
+        describe('Upper earnings threshold', () => {
+            it('usage should be nil if tax payer has no income', () => {
+                let john = new Taxpayer({});
+                expect(john.NatInsUELUsage).to.equal(0);
+            });
+
+            it('should be the difference between upper limit PT and salary', () => {
+                let john = new Taxpayer(100000);
+                let upperLimitPT = john.rules.nationalInsurance.bands[0].upperLimit,
+                    {grossSalary} = john;
+
+                expect(john.NatInsUELUsage).to.equal(grossSalary - upperLimitPT);
+            });
+        });
         
     });
 });
