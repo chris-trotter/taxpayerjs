@@ -199,7 +199,7 @@ class Taxpayer {
         return grossSalary - (pensionSacrifice + studentLoanRepayment + taxPayable);
     }
 
-    get NatInsPTUsage() {
+    get NatInsPtUsage() {
         let usage, taxableSalary,
             {grossSalary} = this,
             {lowerLimit, upperLimit} = this.rules.nationalInsurance.bands[0];
@@ -212,7 +212,18 @@ class Taxpayer {
         return usage;
     }
 
-    get NatInsUELUsage() {
+    get NatInsPtTax() {
+        let tax,
+            {NatInsPtUsage} = this,
+            {rate} = this.rules.nationalInsurance.bands[0];
+        
+        // Deduct NI tax free amount prior to determining liability
+        tax = NatInsPtUsage * rate;
+
+        return tax;
+    }
+
+    get NatInsUelUsage() {
         let usage, taxableSalary,
             {grossSalary} = this,
             {lowerLimit} = this.rules.nationalInsurance.bands[1];

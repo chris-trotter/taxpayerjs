@@ -361,20 +361,33 @@ describe('Taxpayer class', () => {
         describe('Primary threshold', () => {
             it('usage should be nil if tax payer has no income', () => {
                 let john = new Taxpayer({});
-                expect(john.NatInsPTUsage).to.equal(0);
+                expect(john.NatInsPtUsage).to.equal(0);
             });
 
             it('should be the difference between lower and upper limit for a high earner', () => {
                 let john = new Taxpayer(100000);
                 let {lowerLimit, upperLimit} = john.rules.nationalInsurance.bands[0];
-                expect(john.NatInsPTUsage).to.equal(upperLimit - lowerLimit);
+                expect(john.NatInsPtUsage).to.equal(upperLimit - lowerLimit);
+            });
+
+            it('should charge no PT tax when tax payer has no income', () => {
+                let john = new Taxpayer({});
+                expect(john.NatInsPtTax).to.equal(0);
+            });
+
+            it('should charge tax when tax payer income is above threshold', () => {
+                let john = new Taxpayer({});
+                let {lowerLimit} = john.rules.nationalInsurance.bands[0];
+                john.grossSalary = lowerLimit + 1000;
+
+                expect(john.NatInsPtTax).to.be.greaterThan(0);
             });
         });
 
         describe('Upper earnings threshold', () => {
             it('usage should be nil if tax payer has no income', () => {
                 let john = new Taxpayer({});
-                expect(john.NatInsUELUsage).to.equal(0);
+                expect(john.NatInsUelUsage).to.equal(0);
             });
 
             it('should be the difference between upper limit PT and salary', () => {
@@ -382,7 +395,7 @@ describe('Taxpayer class', () => {
                 let upperLimitPT = john.rules.nationalInsurance.bands[0].upperLimit,
                     {grossSalary} = john;
 
-                expect(john.NatInsUELUsage).to.equal(grossSalary - upperLimitPT);
+                expect(john.NatInsUelUsage).to.equal(grossSalary - upperLimitPT);
             });
         });
         
