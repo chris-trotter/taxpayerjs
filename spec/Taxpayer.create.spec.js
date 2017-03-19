@@ -347,11 +347,13 @@ describe('Taxpayer class', () => {
             };
             let john = new Taxpayer(johnSettings);
 
-            let {grossSalary, studentLoanRepayment, pensionSacrifice, taxPayable} = john;
-            let takeHomePay =   grossSalary -
-                                studentLoanRepayment -
-                                pensionSacrifice -
-                                taxPayable;
+            let {grossSalary, studentLoanRepayment, pensionSacrifice, taxPayable,
+                nationalInsurance} = john;
+            let takeHomePay =   grossSalary - (
+                                studentLoanRepayment +
+                                pensionSacrifice +
+                                taxPayable +
+                                nationalInsurance);
 
             expect(john.takeHomePay).to.equal(takeHomePay);
         });

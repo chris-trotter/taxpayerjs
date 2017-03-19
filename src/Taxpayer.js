@@ -194,9 +194,10 @@ class Taxpayer {
     }
 
     get takeHomePay() {
-        let {grossSalary, pensionSacrifice, studentLoanRepayment, taxPayable} = this;
+        let {grossSalary, pensionSacrifice, studentLoanRepayment, taxPayable,
+            nationalInsurance} = this;
         
-        return grossSalary - (pensionSacrifice + studentLoanRepayment + taxPayable);
+        return grossSalary - (pensionSacrifice + studentLoanRepayment + taxPayable + nationalInsurance);
     }
 
     get natInsPtUsage() {
