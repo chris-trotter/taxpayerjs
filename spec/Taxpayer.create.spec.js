@@ -114,6 +114,17 @@ describe('Taxpayer class', () => {
         });
     });
 
+    describe('Total income', () => {
+        it('should sum up all forms of employment-related income', () => {
+            let johnSettings = {
+                grossSalary: 50000,
+                benefitsInKind: 1000
+            };
+            let john = new Taxpayer(johnSettings);
+            expect(john.totalIncome).to.equal(john.grossSalary + john.benefitsInKind);
+        });
+    })
+
     describe('Personal allowance', () => {
         it('should match gross salary if below maximum personal allowance', () => {
             let john = new Taxpayer({});
@@ -159,6 +170,26 @@ describe('Taxpayer class', () => {
             let john = new Taxpayer(johnSettings);
 
             expect(john.pensionSacrifice).to.equal(0);
+        });
+
+        it('should reduce taxable income', () => {
+            let john = new Taxpayer(50000);
+            let unmodifiedTaxableIncome = john.taxableIncome;
+
+            john.pensionSacrificePercent = 0.05; // 5%
+            let modifiedTaxableIncome = john.taxableIncome;
+
+            expect(unmodifiedTaxableIncome).to.be.greaterThan(modifiedTaxableIncome);
+        });
+
+        it('should reduce takehome pay', () => {
+            let john = new Taxpayer(50000);
+            let unmodifiedTakeHomePay = john.takeHomePay;
+
+            john.pensionSacrificePercent = 0.05; // 5%
+            let modifiedTakeHomePay = john.takeHomePay;
+
+            expect(unmodifiedTakeHomePay).to.be.greaterThan(modifiedTakeHomePay);
         });
 
         it('should calculate correct pension sacrifice when set', () => {

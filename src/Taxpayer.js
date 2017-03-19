@@ -127,10 +127,28 @@ class Taxpayer {
         return repayment;
     }
 
-    get taxableIncome() {
-        let {grossSalary, personalAllowance} = this;
+    get totalIncome() {
+        let income,
+            {grossSalary, benefitsInKind} = this;
 
-        return grossSalary - personalAllowance;
+        income = grossSalary + benefitsInKind;
+
+        return income;
+    }
+
+    get incomeDeductions() {
+        let deductions = 0,
+            {pensionSacrifice} = this;
+
+        deductions = pensionSacrifice;
+        
+        return deductions;
+    }
+
+    get taxableIncome() {
+        let {totalIncome, incomeDeductions, personalAllowance} = this;
+
+        return (totalIncome - incomeDeductions) - personalAllowance;
     }
 
     get basicRateUsage() {
