@@ -199,7 +199,7 @@ class Taxpayer {
         return grossSalary - (pensionSacrifice + studentLoanRepayment + taxPayable);
     }
 
-    get NatInsPtUsage() {
+    get natInsPtUsage() {
         let usage, taxableSalary,
             {grossSalary} = this,
             {lowerLimit, upperLimit} = this.rules.nationalInsurance.bands[0];
@@ -212,18 +212,18 @@ class Taxpayer {
         return usage;
     }
 
-    get NatInsPtTax() {
+    get natInsPtTax() {
         let tax,
-            {NatInsPtUsage} = this,
+            {natInsPtUsage} = this,
             {rate} = this.rules.nationalInsurance.bands[0];
         
         // Deduct NI tax free amount prior to determining liability
-        tax = NatInsPtUsage * rate;
+        tax = natInsPtUsage * rate;
 
         return tax;
     }
 
-    get NatInsUelUsage() {
+    get natInsUelUsage() {
         let usage, taxableSalary,
             {grossSalary} = this,
             {lowerLimit} = this.rules.nationalInsurance.bands[1];
@@ -234,21 +234,21 @@ class Taxpayer {
         return usage;
     }
 
-    get NatInsUelTax() {
+    get natInsUelTax() {
         let tax,
-            {NatInsUelUsage} = this,
+            {natInsUelUsage} = this,
             {rate} = this.rules.nationalInsurance.bands[1];
         
         // Deduct NI tax free amount prior to determining liability
-        tax = NatInsUelUsage * rate;
+        tax = natInsUelUsage * rate;
 
         return tax;
     }
 
     get nationalInsurance() {
-        let {NatInsPtTax, NatInsUelTax} = this;
+        let {natInsPtTax, natInsUelTax} = this;
 
-        return NatInsPtTax + NatInsUelTax;
+        return natInsPtTax + natInsUelTax;
     }
 
 }

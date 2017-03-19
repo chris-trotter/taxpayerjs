@@ -360,8 +360,8 @@ describe('Taxpayer class', () => {
     describe('National insurance', () => {
         it('should retrieve total national insurance payable by the tax payer', () => {
             let john = new Taxpayer({});
-            let {NatInsPtTax, NatInsUelTax} = john,
-                expectedTax = NatInsPtTax + NatInsUelTax;
+            let {natInsPtTax, natInsUelTax} = john,
+                expectedTax = natInsPtTax + natInsUelTax;
             
             expect(john.nationalInsurance).to.equal(expectedTax);
         });
@@ -369,18 +369,18 @@ describe('Taxpayer class', () => {
         describe('Primary threshold', () => {
             it('usage should be nil if tax payer has no income', () => {
                 let john = new Taxpayer({});
-                expect(john.NatInsPtUsage).to.equal(0);
+                expect(john.natInsPtUsage).to.equal(0);
             });
 
             it('should be the difference between lower and upper limit for a high earner', () => {
                 let john = new Taxpayer(100000);
                 let {lowerLimit, upperLimit} = john.rules.nationalInsurance.bands[0];
-                expect(john.NatInsPtUsage).to.equal(upperLimit - lowerLimit);
+                expect(john.natInsPtUsage).to.equal(upperLimit - lowerLimit);
             });
 
             it('should charge no PT tax when tax payer has no income', () => {
                 let john = new Taxpayer({});
-                expect(john.NatInsPtTax).to.equal(0);
+                expect(john.natInsPtTax).to.equal(0);
             });
 
             it('should charge tax when tax payer income is above threshold', () => {
@@ -388,14 +388,14 @@ describe('Taxpayer class', () => {
                 let {lowerLimit} = john.rules.nationalInsurance.bands[0];
                 john.grossSalary = lowerLimit + 1000;
 
-                expect(john.NatInsPtTax).to.be.greaterThan(0);
+                expect(john.natInsPtTax).to.be.greaterThan(0);
             });
         });
 
         describe('Upper earnings threshold', () => {
             it('usage should be nil if tax payer has no income', () => {
                 let john = new Taxpayer({});
-                expect(john.NatInsUelUsage).to.equal(0);
+                expect(john.natInsUelUsage).to.equal(0);
             });
 
             it('should be the difference between upper limit PT and salary', () => {
@@ -403,12 +403,12 @@ describe('Taxpayer class', () => {
                 let upperLimitPT = john.rules.nationalInsurance.bands[0].upperLimit,
                     {grossSalary} = john;
 
-                expect(john.NatInsUelUsage).to.equal(grossSalary - upperLimitPT);
+                expect(john.natInsUelUsage).to.equal(grossSalary - upperLimitPT);
             });
 
             it('should charge no UEL tax when tax payer has no income', () => {
                 let john = new Taxpayer({});
-                expect(john.NatInsUelTax).to.equal(0);
+                expect(john.natInsUelTax).to.equal(0);
             });
 
             it('should charge tax when tax payer income is above lower threshold', () => {
@@ -416,7 +416,7 @@ describe('Taxpayer class', () => {
                 let {lowerLimit} = john.rules.nationalInsurance.bands[1];
                 john.grossSalary = lowerLimit + 1000;
 
-                expect(john.NatInsUelTax).to.be.greaterThan(0);
+                expect(john.natInsUelTax).to.be.greaterThan(0);
             });
 
             it('should charge tax equal to the UEL usage times the UEL rate', () => {
@@ -425,8 +425,8 @@ describe('Taxpayer class', () => {
                     {lowerLimit, rate} = john.rules.nationalInsurance.bands[1],
                     expectedTax = (grossSalary - lowerLimit) * rate;
                 
-                expect(john.NatInsUelTax).to.be.greaterThan(0);
-                expect(john.NatInsUelTax).to.equal(expectedTax);
+                expect(john.natInsUelTax).to.be.greaterThan(0);
+                expect(john.natInsUelTax).to.equal(expectedTax);
             });
             
         });
