@@ -202,13 +202,18 @@ class Taxpayer {
 
     get natInsPtUsage() {
         let usage, taxableSalary,
-            {grossSalary} = this,
+            {grossSalary, age} = this,
+            {pensionAge} = this.rules.nationalInsurance,
             {lowerLimit, upperLimit} = this.rules.nationalInsurance.bands[0];
         
         // Deduct NI tax free amount prior to determining liability
         taxableSalary = Math.max(grossSalary - lowerLimit, 0);
-
         usage = Math.min(taxableSalary, upperLimit - lowerLimit);
+
+        // No NI Liability if pensionable age
+        if (age >= pensionAge) {
+            usage = 0;
+        }
 
         return usage;
     }
@@ -226,11 +231,17 @@ class Taxpayer {
 
     get natInsUelUsage() {
         let usage, taxableSalary,
-            {grossSalary} = this,
+            {grossSalary, age} = this,
+            {pensionAge} = this.rules.nationalInsurance,
             {lowerLimit} = this.rules.nationalInsurance.bands[1];
         
         taxableSalary = grossSalary - lowerLimit;
         usage = Math.max(taxableSalary, 0);
+
+        // No NI Liability if pensionable age
+        if (age >= pensionAge) {
+            usage = 0;
+        }
 
         return usage;
     }
