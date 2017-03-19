@@ -368,9 +368,31 @@ describe('Taxpayer class', () => {
             expect(john.nationalInsurance).to.equal(expectedTax);
         });
 
+        it('should be nil if tax payer is over pension age', () => {
+            let johnSettings = {
+                grossSalary: 70000,
+                age: 70
+            };
+            let john = new Taxpayer(johnSettings);
+            let {natInsPtTax, natInsUelTax} = john,
+                expectedTax = natInsPtTax + natInsUelTax;
+            
+            expect(john.nationalInsurance).to.equal(0);
+        });
+
         describe('Primary threshold', () => {
             it('usage should be nil if tax payer has no income', () => {
                 let john = new Taxpayer({});
+                expect(john.natInsPtUsage).to.equal(0);
+            });
+
+            it('usage should be nil if tax payer is over pension age', () => {
+                let johnSettings = {
+                    grossSalary: 50000,
+                    age: 70
+                };
+
+                let john = new Taxpayer(johnSettings);
                 expect(john.natInsPtUsage).to.equal(0);
             });
 
@@ -397,6 +419,16 @@ describe('Taxpayer class', () => {
         describe('Upper earnings threshold', () => {
             it('usage should be nil if tax payer has no income', () => {
                 let john = new Taxpayer({});
+                expect(john.natInsUelUsage).to.equal(0);
+            });
+
+            it('usage should be nil if tax payer is over pension age', () => {
+                let johnSettings = {
+                    grossSalary: 80000,
+                    age: 70
+                };
+                
+                let john = new Taxpayer(johnSettings);
                 expect(john.natInsUelUsage).to.equal(0);
             });
 
