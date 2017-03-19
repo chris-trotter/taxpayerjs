@@ -138,9 +138,9 @@ class Taxpayer {
 
     get incomeDeductions() {
         let deductions = 0,
-            {pensionSacrifice} = this;
+            {pensionSacrifice, giftAid} = this;
 
-        deductions = pensionSacrifice;
+        deductions = pensionSacrifice + giftAid;
         
         return deductions;
     }

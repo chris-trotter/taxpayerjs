@@ -204,6 +204,26 @@ describe('Taxpayer class', () => {
         });
     });
 
+    describe('Gift aid donations', () => {
+        it('should increase deductions', () => {
+            let john = new Taxpayer(70000);
+            let preDeductions = john.incomeDeductions;
+            john.giftAid = 2000;
+            let postDeductions = john.incomeDeductions;
+
+            expect(preDeductions).to.be.lessThan(postDeductions);
+        });
+
+        it('should reduce tax payable', () => {
+            let john = new Taxpayer(70000);
+            let preGiftTax = john.taxPayable;
+            john.giftAid = 2000;
+            let postGiftTax = john.taxPayable;
+
+            expect(preGiftTax).to.be.greaterThan(postGiftTax);
+        });
+    });
+
     describe('Student loan repayments', () => {
         it('should have nil repayments if not opted in to student loan repayments', () => {
             let johnSettings = {
