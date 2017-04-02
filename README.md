@@ -28,27 +28,22 @@ const Taxpayer = require('build/taxpayer.js');
   var john = new Taxpayer(50000);
   
   // Assign john's tax liability to a new variable called liability
-  var liability = john.taxLiability;
+  var liability1 = john.taxPayable;
+  
+  // More detailed - configuring with detailed attributes (see attributes section below)
+  var johnAttributes = {
+  age: 30,
+  grossSalary: 50000,
+  giftAid: 2000,
+  studentLoanRepayments: true
+  pensionSacrificePercent: 0.05
+  }
+  
+  var sarah = new Taxpayer(sarahAttributes);
+  var liability2 = sarah.taxPayable;
   
 </script>
 ```
-
-## Available methods
-
-| Method name | Description | Usage |
-| ---         | ---         | ---   |
-| personalAllowance     | Calculates the personal allowance allowance to be used by the taxpayer     | john.personalAllowance    |
-| studentLoanRepayment | Calculates the student loan payments due from the tax payer (if applicable). | john.studentLoanRepayment |
-| taxableIncome | Calculates the total amount of income that will be deemed taxable under UK tax law. For example, this may be less than gross salary if the tax payer has pension deductions. | john.taxableIncome | 
-| basicRateUsage | Calculates usage of the basic rate band | john.basicRateUsage
-| basicRateTax | Calculates basic rate tax liability | john.basicRateTax
-| higherRateUsage | Calculates usage of the higher rate band | john.higherRateUsage
-| higherRateTax | Calculates higher rate tax liability | john.higherRateTax
-| additionalRateTax | Calculates additional rate tax liability | john.additionalRateTax
-| additionalRateUsage | Calculates usage of the additional rate tax band | john.additionalRateUsage
-| taxPayable | Calculates total income tax liability | john.taxPayable
-| takeHomePay | Calculates income to be kept by the taxpayer after deduction of taxes, loan repayments, national insurance and pension sacrifice | john.takeHomePay
-| nationalInsurance | Calculates total national insurance liability |  john.nationalInsurance
 
 ## Default attributes
 When instantiating a new taxpayer object, the library will make assumptions about the taxpayer which may be overwritten.
@@ -78,6 +73,23 @@ john.giftAid = 30000;
 // Calculate John's additional rate tax liability
 var additionalTax = john.additionalRateTax;
 ```
+
+## Available methods
+
+| Method name | Description | Usage |
+| ---         | ---         | ---   |
+| personalAllowance     | Calculates the personal allowance allowance to be used by the taxpayer     | john.personalAllowance    |
+| studentLoanRepayment | Calculates the student loan payments due from the tax payer (if applicable). | john.studentLoanRepayment |
+| taxableIncome | Calculates the total amount of income that will be deemed taxable under UK tax law. For example, this may be less than gross salary if the tax payer has pension deductions. | john.taxableIncome | 
+| basicRateUsage | Calculates usage of the basic rate band | john.basicRateUsage
+| basicRateTax | Calculates basic rate tax liability | john.basicRateTax
+| higherRateUsage | Calculates usage of the higher rate band | john.higherRateUsage
+| higherRateTax | Calculates higher rate tax liability | john.higherRateTax
+| additionalRateTax | Calculates additional rate tax liability | john.additionalRateTax
+| additionalRateUsage | Calculates usage of the additional rate tax band | john.additionalRateUsage
+| taxPayable | Calculates total income tax liability | john.taxPayable
+| takeHomePay | Calculates income to be kept by the taxpayer after deduction of taxes, loan repayments, national insurance and pension sacrifice | john.takeHomePay
+| nationalInsurance | Calculates total national insurance liability |  john.nationalInsurance
 
 ## What if the tax payer is paid weekly/monthly or another period?
 By the default the library assumes that all amounts entered represent annual remuneration. This may be changed by setting the payPeriod attribute on the taxpayer to `daily`, `weekly` or `monthly`. This will ensure that rules are adjusted to match the period.
