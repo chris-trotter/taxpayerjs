@@ -1,13 +1,27 @@
-# taxpayerjs
+# taxpayer.js
 A javascript library to perform UK personal taxation calculations
 
 ## What is it
 Taxpayer.js peforms common personal taxation calculations that are relevant under UK law. This project is likely to be useful for those developing applications that require an estimate of an individual's personal taxation liabilities for a particular tax year.
 
 ## How do I configure this with my website?
+This library is compatible with both browsers and node.js. Although the code, located in the `src` folder, has been written in in ES6, the library has been bundled using ES5 to ensure wide compatibility.
+
+### node.js usage
+```javascript
+const Taxpayer = require('build/taxpayer.js');
+
+```
+
+### Browser based usage
 ```javascript
 // Assuming ES5 as compatible with all environments
 <script type="text/javascript" src="taxpayer.js"></script>
+```
+
+## Instantiating a new taxpayer object
+```javascript
+  // Ensure that taxpayer.js library has been imported to your environment.
   
 <script>
   // Basic example - Instantiate a new taxpayer with a salary of 50000
