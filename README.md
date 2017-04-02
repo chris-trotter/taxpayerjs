@@ -120,3 +120,7 @@ Any tax calculations performed will be made using the tax rules for the passed t
 ## How do I add a new tax year?
 Provided the structure of personal taxation rules in the UK do not change in future tax years, rules for tax years may be amended by adding an additional object in the `insert` file. By default the library uses the most recently configured tax year.
 
+## Future features
+-  Add ability to add multiple jobs to enable correct national insurance payments
+-  Add additional edge cases
+-  Add GUI demo case
