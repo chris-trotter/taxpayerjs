@@ -16,7 +16,7 @@ const Taxpayer = require('build/taxpayer.js');
 ### Browser based usage
 ```javascript
 // Assuming ES5 as compatible with all environments
-<script type="text/javascript" src="taxpayer.js"></script>
+<script type="text/javascript" src="build/taxpayer.js"></script>
 ```
 
 ## Instantiating a new taxpayer object
